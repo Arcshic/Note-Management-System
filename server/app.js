@@ -18,7 +18,7 @@ const update = multer({
     dest:"./public/upload/temp"
 })
 app.use(update.any())
-
+app.use("/test",require("./router/TestRouter"))
 
 app.get("/",(req,res)=>{
     res.send("Hello World!")
