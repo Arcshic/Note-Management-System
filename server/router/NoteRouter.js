@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { db, genId } = require("../db/DbUtils");
 
-router.post("/add", async (req,res)=>{
+router.post("/_token/add", async (req,res)=>{
     let {title,categoryId,content} = req.body;
     let id = genId.NextId();
     let create_time = new Date().getTime();
@@ -23,7 +23,7 @@ router.post("/add", async (req,res)=>{
     }
 })
 
-router.put("/update", async (req,res)=>{
+router.put("/_token/update", async (req,res)=>{
     let {id,title,categoryId,content} = req.body;
     let create_time = new Date().getTime();
     const updateSql = "UPDATE `note` SET `title` = ?, `content` = ?, `category_id` = ? WHERE `id` = ?"
@@ -43,7 +43,7 @@ router.put("/update", async (req,res)=>{
     }
 })
 
-router.delete("/delete", async (req,res)=>{
+router.delete("/_token/delete", async (req,res)=>{
     let id = req.query.id;
     const deleteSql = "DELETE FROM `note` WHERE `id` = ?"
     let {err,rows} = await db.async.run(deleteSql,[id])
