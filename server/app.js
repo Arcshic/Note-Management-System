@@ -1,5 +1,6 @@
 const express = require("express");
 const multer = require("multer");
+const path = require("path")
 const app = express();
 const port = 8080;
 
@@ -18,10 +19,13 @@ const update = multer({
     dest:"./public/upload/temp"
 })
 app.use(update.any())
+app.use(express.static(path.join(__dirname,"public")))
+
 app.use("/test",require("./router/TestRouter"))
 app.use("/admin",require("./router/AdminRouter"))
 app.use("/category",require("./router/CategoryRouter"))
 app.use("/note",require("./router/NoteRouter"))
+app.use("/upload",require("./router/UploadRouter"))
 
 app.get("/",(req,res)=>{
     res.send("Hello World!")
