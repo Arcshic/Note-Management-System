@@ -11,7 +11,7 @@
                 </n-form-item>
             </n-form>
             <template #footer>
-                <n-checkbox v-model:checked="admin.rember" label="Remember me" />
+                <n-checkbox v-model:checked="admin.remember" label="Remember me" />
                 <n-button @click="login">Login</n-button>
             </template>
         </n-card>
@@ -23,8 +23,17 @@
 import { ref, reactive, inject } from 'vue'
 import {AdminStore} from '../stores/AdminStore'
 
+import { useRouter,useRoute } from 'vue-router';
+const router = useRouter();
+const route = useRoute();
+
+
 const axios = inject("axios")
+const message = inject("message")
+const notification = inject("notification")
+const dialog = inject("dialog")
 const adminStore = AdminStore()
+
 
 let rules = {
     account: [
@@ -37,9 +46,9 @@ let rules = {
     ],
 }
 const admin = reactive({
-    account: "",
-    password: "",
-    rember: false
+    account: localStorage.getItem("account") || "",
+    password: localStorage.getItem("password") || "",
+    remember: localStorage.getItem("remember") ==1
 })
 
 const login = async () =>{
@@ -51,8 +60,16 @@ const login = async () =>{
         adminStore.token = result.data.data.token
         adminStore.account = result.data.data.account
         adminStore.id = result.data.data.id
+        
+        if(admin.remember){
+            localStorage.setItem("account",admin.account)
+            localStorage.setItem("password",admin.password)
+            localStorage.setItem("remember",admin.remember?1:0)
+        }
+        router.push("/dashboard")
+        message.info("login successful")
     }else{
-
+        message.error("login failed")
     }
     console.log(result)
 }

@@ -17,13 +17,13 @@ router.post("/login",async (req,res)=>{
         adminInfo.password = ""
         res.send({
             code:200,
-            msg:"log in successful",
+            msg:"login successful",
             data:adminInfo
         })
     } else{
         res.send({
             code:500,
-            msg:"log in failed"
+            msg:"login failed"
         })
     }
 })
