@@ -15,7 +15,7 @@ i18nChangeLanguage('en')
 
 const serverUrl = inject("serverUrl")
 const editorRef = shallowRef();
-const toolbarConfig = {};
+const toolbarConfig = {excludeKeys:["uploadVideo"]};
 const mode = ref("default")
 const editorConfig = { placeholder: 'Please enter the content' };
 editorConfig.MENU_CONF = {}

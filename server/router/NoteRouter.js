@@ -84,7 +84,7 @@ router.get("/search", async (req, res) => {
         whereSqlsSentence = " WHERE " + whereSqls.join(" AND ")
     }
 
-    let searchSqlSentence = " SELECT * FROM `note` " + whereSqlsSentence + " ORDER BY `create_time` DESC LIMIT ?,? "
+    let searchSqlSentence = " SELECT `id`,`category_id`,`title`,substr(`content`,0,50) AS `content`,`create_time` FROM `note` " + whereSqlsSentence + " ORDER BY `create_time` DESC LIMIT ?,? "
     let searchSqlParams = params.concat([(page - 1)*pagesize,pagesize])
     let searchCount = " SELECT count(*) AS `count` FROM 'note' " + whereSqlsSentence;
     let searchCountParams = params;
