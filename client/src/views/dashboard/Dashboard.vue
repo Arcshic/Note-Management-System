@@ -48,15 +48,15 @@ const toPage = (menu) =>{
 .main-panel {
     display: flex;
     color: #64676a;
-    max-width: 1500px;
+    max-width: 100%;
     margin: 0 auto;
 }
 .menus {
-    padding: 20px 0;
+    padding: 20px;
     box-sizing: border-box;
     line-height: 55px;
     text-align: center;
-    width: 180px;
+    width: 240px;
     height: 95vh;
     border-right: 1px solid #dadada;
     div{
@@ -67,7 +67,7 @@ const toPage = (menu) =>{
     }
 }
 .title{
-    font-size: 65px;
+    font-size: 40px;
     font-weight: bold;
     text-align: right;
     position: fixed;
