@@ -67,7 +67,7 @@ const notification = inject("notification")
 const dialog = inject("dialog")
 
 const showAddModel = ref(false)
-const showUpdateModel = ref(false)
+let showUpdateModel = ref(false)
 const categoryList = ref([])
 const addCategory = reactive({
     name: ""
