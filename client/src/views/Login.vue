@@ -21,8 +21,10 @@
 <script setup>
 
 import { ref, reactive, inject } from 'vue'
+import {AdminStore} from '../stores/AdminStore'
 
 const axios = inject("axios")
+const adminStore = AdminStore()
 
 let rules = {
     account: [
@@ -45,6 +47,13 @@ const login = async () =>{
         account:admin.account,
         password:admin.password
     });
+    if(result.data.code == 200){
+        adminStore.token = result.data.data.token
+        adminStore.account = result.data.data.account
+        adminStore.id = result.data.data.id
+    }else{
+
+    }
     console.log(result)
 }
 </script>
