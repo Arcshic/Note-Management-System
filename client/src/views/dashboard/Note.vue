@@ -13,13 +13,13 @@
                     </template>
                 </n-card>
             </div>
-            <n-space>
-                <div @click="toPage(pageNum)" v-for="pageNum in pageInfo.pageCount">
-                    <div :style="'color:'+(pageNum == pageInfo.page?'blue':'')">{{ pageNum }}</div>
-                    
-                </div>
-            </n-space>
-
+            <br>
+            <div>
+                <n-space vertical>
+                    <n-pagination @click="toPage(page)" v-model:page="page" :page-count="pageInfo.pageCount"
+                        :page-slot="8" />
+                </n-space>
+            </div>
         </n-tab-pane>
         <n-tab-pane name="add" tab="Add a new note">
             <n-form>
@@ -80,7 +80,7 @@ const addNote = reactive({
     content: "Please enter the content"
 })
 const updateNote = reactive({
-    id:0,
+    id: 0,
     categoryId: 0,
     title: "",
     content: "Please enter the content"
@@ -90,7 +90,7 @@ const categoryOptions = ref([])
 const noteList = ref([])
 let pageInfo = reactive({
     page: 1,
-    pageSize: 3,
+    pageSize: 5,
     pageCount: 0,
     Count: 0
 })
@@ -131,7 +131,7 @@ const add = async () => {
     }
 }
 
-const toPage = async(pageNum)=>{
+const toPage = async (pageNum) => {
     pageInfo.page = pageNum
     loadNote()
 }
