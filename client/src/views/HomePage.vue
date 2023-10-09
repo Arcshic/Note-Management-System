@@ -3,7 +3,7 @@
         <div class="nav">
             <div @click="homePage">Home</div>
             <div>
-                <n-popselect v-model:value="selectedCategory" :options="categoryOptions" trigger="click">
+                <n-popselect @update:value="searchByCategory" v-model:value="selectedCategory" :options="categoryOptions" trigger="click">
                     <div>Category <span>{{ categoryName }}</span></div>
                 </n-popselect>
             </div>
@@ -15,8 +15,8 @@
             <n-button type="primary" ghost @click="loadNote(0)">Search</n-button>
             
         </n-space>
-        <div v-for="(note, index) in noteList">
-            <n-card :title="note.title">
+        <div v-for="(note, index) in noteList" style="margin-bottom: 15px;cursor: pointer;">
+            <n-card :title="note.title" @click="toContent(note)">
                 {{ note.content }}
                 <template #footer>
                     <n-space align="center">
@@ -72,7 +72,13 @@ const loadCategory = async () => {
         }
     })
 }
-
+const searchByCategory = (categoryId)=>{
+    pageInfo.categoryId = categoryId
+    loadNote()
+}
+const toContent = (note)=>{
+    router.push({path:"/content",query:{id:note.id}})
+}
 const homePage = () => {
     router.push("/")
 }
@@ -85,7 +91,7 @@ const loadNote = async (page = 0) => {
     if(page !=0){
         pageInfo.page = page;
     }
-    let res = await axios.get(`/note/search?keyword=${pageInfo.keyword}&page=${pageInfo.page}&pagesize=${pageInfo.pageSize}`)
+    let res = await axios.get(`/note/search?keyword=${pageInfo.keyword}&page=${pageInfo.page}&pagesize=${pageInfo.pageSize}&categoryId=${pageInfo.categoryId}`)
     let tempRows = res.data.data.rows
     for (let row of tempRows) {
         row.content += "..."
@@ -102,7 +108,8 @@ let pageInfo = reactive({
     pageSize: 5,
     pageCount: 0,
     Count: 0,
-    keyword: ""
+    keyword: "",
+    categoryId:0
 })
 </script>
 
