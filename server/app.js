@@ -44,7 +44,6 @@ app.all("*", async (req, res, next) => {
     }
 })
 
-app.use("/test", require("./router/TestRouter"))
 app.use("/admin", require("./router/AdminRouter"))
 app.use("/category", require("./router/CategoryRouter"))
 app.use("/note", require("./router/NoteRouter"))
