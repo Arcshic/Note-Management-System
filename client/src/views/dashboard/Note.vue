@@ -1,5 +1,5 @@
 <template>
-    <n-tabs default-value="list" justify-content="start" type="line">
+    <n-tabs v-model:value="tabValue" justify-content="start" type="line">
         <n-tab-pane name="list" tab="Note list">
             <div v-for="(note, index) in noteList">
                 <n-card :title="note.title">
@@ -7,8 +7,8 @@
                     <template #footer>
                         <n-space align="center">
                             <div>Create time: {{ note.create_time }}</div>
-                            <n-button>Update</n-button>
-                            <n-button>Delete</n-button>
+                            <n-button @click="toUpdate(note)">Update</n-button>
+                            <n-button @click="toDelete(note)">Delete</n-button>
                         </n-space>
                     </template>
                 </n-card>
@@ -85,9 +85,10 @@ const updateNote = reactive({
     title: "",
     content: "Please enter the content"
 })
-
+let page
 const categoryOptions = ref([])
 const noteList = ref([])
+const tabValue = ref("list")
 let pageInfo = reactive({
     page: 1,
     pageSize: 5,
@@ -135,6 +136,50 @@ const toPage = async (pageNum) => {
     pageInfo.page = pageNum
     loadNote()
 }
+const toUpdate = async (note) => {
+    tabValue.value = "update"
+    let res = await axios.get("/note/detail?id=" + note.id)
+    updateNote.id = note.id;
+    updateNote.title = res.data.rows[0].title;
+    updateNote.content = res.data.rows[0].content;
+    updateNote.categoryId = res.data.rows[0].category_id;
+}
+
+const update = async () => {
+    let res = await axios.put("/note/_token/update", updateNote)
+    if (res.data.code == 200) {
+        message.info(res.data.msg)
+        loadNote()
+        tabValue.value = "list"
+    } else {
+        message.error(res.data.msg)
+    }
+
+}
+
+const toDelete = async (note) => {
+
+    dialog.warning({
+        title: "Warning",
+        content: "Are you sure you want to delete this note?",
+        positiveText: "Confirm",
+        negativeText: "Cancel",
+        onPositiveClick: async () => {
+            let res = await axios.delete("/note/_token/delete?id=" + note.id)
+            if (res.data.code == 200) {
+                message.info(res.data.msg)
+                loadNote()
+            } else {
+                message.error(res.data.msg)
+            }
+        },
+        onNegativeClick: () => {
+        }
+    });
+
+}
+
+
 </script>
 
 <style lang="scss" scoped></style>

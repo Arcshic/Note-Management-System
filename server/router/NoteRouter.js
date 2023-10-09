@@ -113,4 +113,21 @@ router.get("/search", async (req, res) => {
     }
 })
 
+router.get("/detail",async(req,res)=>{
+    let {id} = req.query
+    let detailSql = "SELECT * FROM `note` WHERE `id` = ?"
+    let {err,rows} = await db.async.all(detailSql,[id])
+    if(err==null){
+        res.send({
+            code:200,
+            msg:"Get successful",
+            rows
+        })
+    } else {
+        res.send({
+            code:500,
+            msg:"Get failed"
+        })
+    }
+})
 module.exports = router;
